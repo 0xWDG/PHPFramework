@@ -23,9 +23,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func basename(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return URL(fileURLWithPath: fh).lastPathComponent
 	}
 
 	/// Changes file group (**Not done**)
@@ -100,9 +98,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func dirname(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return URL(fileURLWithPath: fh).deletingLastPathComponent().path
 	}
 
 	/// Returns available space on filesystem or disk partition
@@ -111,16 +107,8 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
     public func disk_free_space(_ fh: String? = "") -> Int64? {
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        if let dictionary = try? FileManager.default().attributesOfFileSystem(forPath: paths.last!) {
-//            if let freeSize = dictionary[NSFileSystemFreeSize] as? NSNumber {
-//                return freeSize.longLongValue
-//            }
-//        }else{
-//            print("Error Obtaining System Memory Info")
-//        }
-
-        return nil
+        let attrs = try? FileManager.default.attributesOfFileSystem(forPath: filesystemPath(fh))
+        return (attrs?[.systemFreeSize] as? NSNumber)?.int64Value
     }
 
 	/// Returns the total size of a filesystem or disk partition
@@ -129,16 +117,8 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func disk_total_space(_ fh: String? = "") -> Int64? {
-//		let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//		if let dictionary = try? FileManager.default().attributesOfFileSystem(forPath: paths.last!) {
-//			if let freeSize = dictionary[NSFileSystemSize] as? NSNumber {
-//				return freeSize.longLongValue
-//			}
-//		} else {
-//			print("Error Obtaining System Memory Info")
-//		}
-
-		return nil
+		let attrs = try? FileManager.default.attributesOfFileSystem(forPath: filesystemPath(fh))
+		return (attrs?[.systemSize] as? NSNumber)?.int64Value
 	}
 
 	/// Alias of ``disk_free_space(_:)``
@@ -233,9 +213,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func file_exists(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		return FileManager.default.fileExists(atPath: fh)
 	}
 
 	/// Reads entire file into a string (**Not done**)
@@ -244,9 +222,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func file_get_contents(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return (try? String(contentsOfFile: fh, encoding: .utf8)) ?? ""
 	}
 
 	/// Write a string to a file (**Not done**)
@@ -255,9 +231,17 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func file_put_contents(_ fh: String) -> Bool {
-		print("Not done")
+		return file_put_contents(fh, "")
+	}
 
-		return false
+	/// Write a string to a file.
+	public func file_put_contents(_ fh: String, _ contents: String) -> Bool {
+		do {
+			try contents.write(toFile: fh, atomically: true, encoding: .utf8)
+			return true
+		} catch {
+			return false
+		}
 	}
 
 	/// Reads entire file into an array (**Not done**)
@@ -266,9 +250,12 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func file(_ fh: String) -> String {
-		print("Not done")
+		return file_get_contents(fh)
+	}
 
-		return "Not done"
+	/// Reads entire file into an array of lines.
+	public func file_lines(_ fh: String) -> [String] {
+		return file_get_contents(fh).components(separatedBy: .newlines).filter { !$0.isEmpty }
 	}
 
 	/// Gets last access time of file (**Not done**)
@@ -277,9 +264,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func fileatime(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return filesystemAttribute(fh, .modificationDate)
 	}
 
 	/// Gets inode change time of file (**Not done**)
@@ -288,9 +273,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func filectime(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return filesystemAttribute(fh, .creationDate)
 	}
 
 	/// Gets file group (**Not done**)
@@ -321,9 +304,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func filemtime(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return filesystemAttribute(fh, .modificationDate)
 	}
 
 	/// Gets file owner (**Not done**)
@@ -343,9 +324,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func fileperms(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return filesystemAttribute(fh, .posixPermissions)
 	}
 
 	/// Gets file size (**Not done**)
@@ -354,9 +333,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func filesize(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return filesystemAttribute(fh, .size)
 	}
 
 	/// Gets file type (**Not done**)
@@ -365,9 +342,12 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func filetype(_ fh: String) -> String {
-		print("Not done")
+		var isDirectory = ObjCBool(false)
+		guard FileManager.default.fileExists(atPath: fh, isDirectory: &isDirectory) else {
+			return "unknown"
+		}
 
-		return "Not done"
+		return isDirectory.boolValue ? "dir" : "file"
 	}
 
 	/// Portable advisory file locking (**Not done**)
@@ -440,9 +420,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func fread(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return file_get_contents(fh)
 	}
 
 	/// Parses input from a file according to a format (**Not done**)
@@ -506,9 +484,12 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func fwrite(_ fh: String) -> Bool {
-		print("Not done")
+		return file_put_contents(fh, "")
+	}
 
-		return false
+	/// Binary-safe file write.
+	public func fwrite(_ fh: String, _ contents: String) -> Bool {
+		return file_put_contents(fh, contents)
 	}
 
 	/// Find pathnames matching a pattern (**Not done**)
@@ -528,9 +509,8 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_dir(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		var isDirectory = ObjCBool(false)
+		return FileManager.default.fileExists(atPath: fh, isDirectory: &isDirectory) && isDirectory.boolValue
 	}
 
 	/// Tells whether the filename is executable (**Not done**)
@@ -539,9 +519,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_executable(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		return FileManager.default.isExecutableFile(atPath: fh)
 	}
 
 	/// Tells whether the filename is a regular file (**Not done**)
@@ -550,9 +528,8 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_file(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		var isDirectory = ObjCBool(false)
+		return FileManager.default.fileExists(atPath: fh, isDirectory: &isDirectory) && !isDirectory.boolValue
 	}
 
 	/// Tells whether the filename is a symbolic link (**Not done**)
@@ -561,9 +538,8 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_link(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		let attrs = try? FileManager.default.attributesOfItem(atPath: fh)
+		return attrs?[.type] as? FileAttributeType == .typeSymbolicLink
 	}
 
 	/// Tells whether a file exists and is readable (**Not done**)
@@ -572,9 +548,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_readable(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		return FileManager.default.isReadableFile(atPath: fh)
 	}
 
 	/// Tells whether the file was uploaded via HTTP POST (**Not done**)
@@ -594,9 +568,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_writeable(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		return is_writable(fh)
 	}
 
 	/// is_writable
@@ -605,7 +577,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func is_writable(_ fh: String) -> Bool {
-		return false
+		return FileManager.default.isWritableFile(atPath: fh)
 	}
 
 	/// Alias of ``is_writable(_:)``
@@ -678,9 +650,21 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func mkdir(_ fh: String) -> Bool {
-		print("Not done")
+		return mkdir(fh, recursive: false)
+	}
 
-		return false
+	/// Makes directory.
+	public func mkdir(_ fh: String, recursive: Bool) -> Bool {
+		do {
+			try FileManager.default.createDirectory(
+				atPath: fh,
+				withIntermediateDirectories: recursive,
+				attributes: nil
+			)
+			return true
+		} catch {
+			return false
+		}
 	}
 
 	/// *Unsupported** Moves an uploaded file to a new location
@@ -755,9 +739,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func readfile(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return file_get_contents(fh)
 	}
 
 	/// Returns the target of a symbolic link (**Not done**)
@@ -799,9 +781,7 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func realpath(_ fh: String) -> String {
-		print("Not done")
-
-		return "Not done"
+		return URL(fileURLWithPath: fh).standardizedFileURL.path
 	}
 
 	/// Renames a file or directory (**Not done**)
@@ -832,9 +812,12 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func rmdir(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		do {
+			try FileManager.default.removeItem(atPath: fh)
+			return true
+		} catch {
+			return false
+		}
 	}
 
 	/// *Unsupported** stream_set_write_buffer
@@ -904,9 +887,16 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func touch(_ fh: String) -> Bool {
-		print("Not done")
+		if FileManager.default.fileExists(atPath: fh) {
+			do {
+				try FileManager.default.setAttributes([.modificationDate: Date()], ofItemAtPath: fh)
+				return true
+			} catch {
+				return false
+			}
+		}
 
-		return false
+		return FileManager.default.createFile(atPath: fh, contents: Data(), attributes: nil)
 	}
 
 	/// Changes the current umask (**Not done**)
@@ -926,9 +916,32 @@ extension PHPFramework {
 	///
 	/// - Returns: Any
 	public func unlink(_ fh: String) -> Bool {
-		print("Not done")
-
-		return false
+		do {
+			try FileManager.default.removeItem(atPath: fh)
+			return true
+		} catch {
+			return false
+		}
 	}
 
+	private func filesystemPath(_ fh: String?) -> String {
+		if let fh, !fh.isEmpty {
+			return fh
+		}
+
+		return FileManager.default.currentDirectoryPath
+	}
+
+	private func filesystemAttribute(_ path: String, _ key: FileAttributeKey) -> String {
+		let attrs = try? FileManager.default.attributesOfItem(atPath: path)
+		if let date = attrs?[key] as? Date {
+			return String(Int(date.timeIntervalSince1970))
+		}
+
+		if let number = attrs?[key] as? NSNumber {
+			return number.stringValue
+		}
+
+		return ""
+	}
 }
