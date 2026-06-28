@@ -12,9 +12,7 @@
 
 import Foundation
 
-/**
- Extensions for Strings
- */
+/// Extensions for Strings
 public extension String {
 	private struct HTMLEntities {
 		static let characterEntities: [String: Character] = [
@@ -283,25 +281,21 @@ public extension String {
 		return self.count
 	}
 
-	/**
-	 contains
-
-	 - Parameter s: String to check
-
-	 - Returns: true/false
-	 */
+	/// contains
+	///
+	/// - Parameter s: String to check
+	///
+	/// - Returns: true/false
     func contains(_ s: String) -> Bool {
 		return self.range(of: s) != nil ? true : false
 	}
 
-	/**
-	 Replace
-
-	 - Parameter target: String
-	 - Parameter withString: Replacement
-
-	 - Returns: Replaced string
-	 */
+	/// Replace
+	///
+	/// - Parameter target: String
+	/// - Parameter withString: Replacement
+	///
+	/// - Returns: Replaced string
     func replace(_ target: String, withString: String) -> String {
         return self.replacingOccurrences(
             of: target, with: withString,
@@ -310,14 +304,12 @@ public extension String {
         )
 	}
 
-    /**
-     Replace (Case Insensitive)
-     
-     - Parameter target: String
-     - Parameter withString: Replacement
-     
-     - Returns: Replaced string
-     */
+    /// Replace (Case Insensitive)
+    ///
+    /// - Parameter target: String
+    /// - Parameter withString: Replacement
+    ///
+    /// - Returns: Replaced string
     func ireplace(_ target: String, withString: String) -> String {
         return self.replacingOccurrences(
             of: target,
@@ -327,13 +319,11 @@ public extension String {
         )
     }
 
-	/**
-	 Character At Index
-
-	 - Parameter index: The index
-
-	 - Returns Character
-	 */
+	/// Character At Index
+	///
+	/// - Parameter index: The index
+	///
+	/// - Returns Character
 	func characterAtIndex(_ index: Int) -> Character! {
 		var cur = 0
 		for char in self {
@@ -345,36 +335,30 @@ public extension String {
 		return nil
 	}
 
-	/**
-	 Character Code At Index
-
-	 - Parameter index: The index
-
-	 - Returns Character
-	 */
+	/// Character Code At Index
+	///
+	/// - Parameter index: The index
+	///
+	/// - Returns Character
 	func charCodeAtindex(_ index: Int) -> Int! {
 		return self.charCodeAt(index)
 	}
 
-	/**
-	 add subscript
-
-	 - Parameter i: The index
-
-	 - Returns: The ranged string
-	 */
+	/// add subscript
+	///
+	/// - Parameter i: The index
+	///
+	/// - Returns: The ranged string
     subscript(i: Int) -> Character {
 		let index = self.index(self.startIndex, offsetBy: i)
         return self[index]
 	}
 
-	/**
-	 add subscript
-
-	 - Parameter r: Range [1..2]
-
-	 - Returns: The ranged string.
-	 */
+	/// add subscript
+	///
+	/// - Parameter r: Range [1..2]
+	///
+	/// - Returns: The ranged string.
     subscript(r: Range<Int>) -> String {
 		let startIndex = self.index(self.startIndex, offsetBy: r.lowerBound)
 		let endIndex = self.index(self.startIndex, offsetBy: r.upperBound - 1)
@@ -382,13 +366,11 @@ public extension String {
 		return String(self[startIndex..<endIndex])
 	}
 
-    /**
-     add subscript
-     
-     - Parameter r: Range [1..2]
-     
-     - Returns: The ranged string.
-     */
+    /// add subscript
+    ///
+    /// - Parameter r: Range [1..2]
+    ///
+    /// - Returns: The ranged string.
     subscript(r: CountableClosedRange<Int>) -> String {
         let startIndex = self.index(self.startIndex, offsetBy: r.lowerBound)
         let endIndex = self.index(self.startIndex, offsetBy: r.upperBound)
@@ -396,15 +378,13 @@ public extension String {
         return String(self[startIndex..<endIndex])
     }
 
-	/**
-	 Finds the string between two bookend strings if it can be found.
-
-	 - parameter left:  The left bookend
-	 - parameter right: The right bookend
-
-	 - returns: The string between the two bookends, 
-                or nil if the bookends cannot be found, the bookends are the same or appear contiguously.
-	 */
+	/// Finds the string between two bookend strings if it can be found.
+	///
+	/// - parameter left:  The left bookend
+	/// - parameter right: The right bookend
+	///
+	/// - returns: The string between the two bookends,
+	/// or nil if the bookends cannot be found, the bookends are the same or appear contiguously.
 	func between(_ left: String, _ right: String) -> String? {
         if let leftRange = range(of: left) {
             if let rightRange = range(of: right, options: .backwards) {
@@ -602,13 +582,11 @@ public extension String {
 	}
 
 	func times(_ n: Int) -> String {
-        var ret = ""
-
-        for _ in stride(from: 0, to: n, by: 1) {
-            ret += self
+        guard n > 0 else {
+            return ""
         }
 
-        return ret
+        return String(repeating: self, count: n)
 	}
 
 	func toFloat() -> Float? {
@@ -634,11 +612,9 @@ public extension String {
 		return nil
 	}
 
-	/**
-	 Convert anything to bool...
-
-	 - Returns: Bool
-	 */
+	/// Convert anything to bool...
+	///
+	/// - Returns: Bool
 	func toBool() -> Bool? {
 		let trimmed = self.trimmed().lowercased()
 		if trimmed == "true" || trimmed == "false" {
@@ -657,11 +633,9 @@ public extension String {
 		return toDate(format)
 	}
 
-	/**
-	 trimmedLeft
-
-	 - Returns: Left trimmed string
-	 */
+	/// trimmedLeft
+	///
+	/// - Returns: Left trimmed string
 	func trimmedLeft() -> String {
 		if let range = rangeOfCharacter(from: CharacterSet.whitespacesAndNewlines.inverted) {
 			return String(self[range.lowerBound..<endIndex])
@@ -670,11 +644,9 @@ public extension String {
 		return self
 	}
 
-	/**
-	 trimmedRight
-
-	 - Returns: Right trimmed string
-	 */
+	/// trimmedRight
+	///
+	/// - Returns: Right trimmed string
 	func trimmedRight() -> String {
         if let range = rangeOfCharacter(
             from: CharacterSet.whitespacesAndNewlines.inverted,
@@ -686,45 +658,39 @@ public extension String {
 		return self
 	}
 
-	/**
-	 trimmed
-
-	 - Returns: Left & Right trimmed.
-	 */
+	/// trimmed
+	///
+	/// - Returns: Left & Right trimmed.
 	func trimmed() -> String {
 		return trimmedLeft().trimmedRight()
 	}
 
-	/**
-	 Convert the number in the string to the corresponding\
-	 Unicode character, e.g.\
-	 <pre>
-	 decodeNumeric("64", 10)   --> "@"
-	 decodeNumeric("20ac", 16) --> "€"
-	 </pre>
-
-	 - Parameter string
-	 - Parameter base
-	 - Returns: Character
-	 */
+	/// Convert the number in the string to the corresponding\
+	/// Unicode character, e.g.\
+	/// <pre>
+	/// decodeNumeric("64", 10)   --> "@"
+	/// decodeNumeric("20ac", 16) --> "€"
+	/// </pre>
+	///
+	/// - Parameter string
+	/// - Parameter base
+	/// - Returns: Character
 	private func decodeNumeric(_ string: String, base: Int32) -> Character? {
 		let code = UInt32(strtoul(string, nil, base))
         return Character(UnicodeScalar(code)!)
 	}
 
-	/**
-	 Decode the HTML character entity to the corresponding\
-	 Unicode character, return `nil` for invalid input.\
-	 <pre>
-	 decode("&amp;#64;")    --> "@"
-	 decode("&amp;#x20ac;") --> "€"
-	 decode("&amp;lt;")     --> "<"
-	 decode("&amp;foo;")    --> nil
-	 </pre>
-
-	 - Parameter entity: The entities
-	 - Returns: Character
-	 */
+	/// Decode the HTML character entity to the corresponding\
+	/// Unicode character, return `nil` for invalid input.\
+	/// <pre>
+	/// decode("&amp;#64;")    --> "@"
+	/// decode("&amp;#x20ac;") --> "€"
+	/// decode("&amp;lt;")     --> "<"
+	/// decode("&amp;foo;")    --> nil
+	/// </pre>
+	///
+	/// - Parameter entity: The entities
+	/// - Returns: Character
 	private func decode(_ entity: String) -> Character? {
 		if entity.hasPrefix("&#x") || entity.hasPrefix("&#X") {
             return decodeNumeric(String(entity.suffix(from: entity.index(entity.startIndex, offsetBy: 3))), base: 16)
@@ -735,12 +701,10 @@ public extension String {
 		}
 	}
 
-	/**
-	 Returns a new string made by replacing in the `String` 
-     all HTML character entity references with the corresponding character.
-
-	 - Returns: the decoded HTML
-	 */
+	/// Returns a new string made by replacing in the `String`
+	/// all HTML character entity references with the corresponding character.
+	///
+	/// - Returns: the decoded HTML
 	func decodeHTML() -> String {
 		var result = ""
 		var position = startIndex
@@ -772,11 +736,9 @@ public extension String {
 		return result
 	}
 
-	/**
-	 Encode the HTML
-
-	 - Returns: the encoded HTML
-	 */
+	/// Encode the HTML
+	///
+	/// - Returns: the encoded HTML
     func encodeHTML() -> String {
 		// Ok, this feels weird.
 		var _tempString = self
@@ -793,23 +755,19 @@ public extension String {
 		return _tempString
 	}
 
-	/**
-	 getHTMLEntities
-
-	 - Returns: the HTMLEntities.
-	 */
+	/// getHTMLEntities
+	///
+	/// - Returns: the HTMLEntities.
     func getHTMLEntities() -> [String: Character] {
 		// PHP, Shame on you. but here you'll go.
 		return HTMLEntities.characterEntities
 	}
 
-	/**
-	 Charcode for the character at index x
-
-	 - Parameter Char: the character index
-
-	 - Returns: charcode (int)
-	 */
+	/// Charcode for the character at index x
+	///
+	/// - Parameter Char: the character index
+	///
+	/// - Returns: charcode (int)
 	func charCodeAt(_ Char: Int) -> Int {
 		// ok search for the character...
 
@@ -831,14 +789,12 @@ public extension String {
         }
     }
 
-	/**
-	 Substring a string.
-
-	 - Parameter start: the start
-	 - Parameter length: the length
-
-	 - Returns: the substring
-	 */
+	/// Substring a string.
+	///
+	/// - Parameter start: the start
+	/// - Parameter length: the length
+	///
+	/// - Returns: the substring
 	func substr(_ start: Int, _ length: Int = 0) -> String {
 		let str = self
 		if length == 0 {

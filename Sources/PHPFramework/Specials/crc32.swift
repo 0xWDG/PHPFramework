@@ -1,44 +1,42 @@
-/**
- _____    _    _   _____    ______                                           _
- |  __ \  | |  | | |  __ \  |  ____|                                         | |
- | |__) | | |__| | | |__) | | |__ _ __ __ _ _ __ ___   _____      _____  _ __| | __
- |  ___/  |  __  | |  ___/  |  __| '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
- | |      | |  | | | |  _   | |  | | | (_| | | | | | |  __/\ V  V / (_) | |  |   <
- |_|      |_|  |_| |_| (_)  |_|  |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
-
-
- Copyright (c) 2016 Wesley de Groot (http://www.wesleydegroot.nl), WDGWV (http://www.wdgwv.com)
-
-
- Variable prefixes:
- PFS = PHP.Framework Shared
- PFT = PHP.Framework Tests (internal)
- PFI = PHP.Framework Internal
- PFU = PHP.Framework Unspecified
-
- usage:
- php.the_php_function(and, parameters, ofcourse)
-
- documentation:
- http://wdg.github.io/php.framework/
-
- wiki:
- https://github.com/wdg/php.framework/wiki
-
- questions/bugs:
- https://github.com/wdg/php.framework/issues
-
- ---------------------------------------------------
- File:    crc32.swift
- Created: 15-JAN-2016
- Creator: Wesley de Groot | @0xWDG
- Issue:   #1 (String Functions)
- Prefix:  N/A
- ---------------------------------------------------
- Thanks:
- compute the CRC-32 of a data stream
- Copyright (C) 1995-1998 Mark Adler
- */
+/// _____    _    _   _____    ______                                           _
+/// |  __ \  | |  | | |  __ \  |  ____|                                         | |
+/// | |__) | | |__| | | |__) | | |__ _ __ __ _ _ __ ___   _____      _____  _ __| | __
+/// |  ___/  |  __  | |  ___/  |  __| '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
+/// | |      | |  | | | |  _   | |  | | | (_| | | | | | |  __/\ V  V / (_) | |  |   <
+/// |_|      |_|  |_| |_| (_)  |_|  |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
+///
+///
+/// Copyright (c) 2016 Wesley de Groot (http://www.wesleydegroot.nl), WDGWV (http://www.wdgwv.com)
+///
+///
+/// Variable prefixes:
+/// PFS = PHP.Framework Shared
+/// PFT = PHP.Framework Tests (internal)
+/// PFI = PHP.Framework Internal
+/// PFU = PHP.Framework Unspecified
+///
+/// usage:
+/// php.the_php_function(and, parameters, ofcourse)
+///
+/// documentation:
+/// http://wdg.github.io/php.framework/
+///
+/// wiki:
+/// https://github.com/wdg/php.framework/wiki
+///
+/// questions/bugs:
+/// https://github.com/wdg/php.framework/issues
+///
+/// ---------------------------------------------------
+/// File:    crc32.swift
+/// Created: 15-JAN-2016
+/// Creator: Wesley de Groot | @0xWDG
+/// Issue:   #1 (String Functions)
+/// Prefix:  N/A
+/// ---------------------------------------------------
+/// Thanks:
+/// compute the CRC-32 of a data stream
+/// Copyright (C) 1995-1998 Mark Adler
 
 import Foundation
 
@@ -48,9 +46,7 @@ extension String {
 	}
 }
 
-/**
- Table of CRC-32's of all single-byte values
- */
+/// Table of CRC-32's of all single-byte values
 private let crcTable: [UInt32] = [
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
 	0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,

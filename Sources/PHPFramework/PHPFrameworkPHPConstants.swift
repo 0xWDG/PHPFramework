@@ -33,7 +33,7 @@ public let E_WARNING: Int = 2
 /// Value of the constant: 4
 public let E_PARSE: Int = 4
 
-/// Run-time notices. 
+/// Run-time notices.
 /// Indicate that the script encountered something that could indicate an error,
 /// but could also happen in the normal course of running a script.
 /// Value of the constant: 8
@@ -142,7 +142,7 @@ public let PHP_OS: String = {
     #endif
 }()
 
-/// The operating system family PHP was built for. 
+/// The operating system family PHP was built for.
 /// One of 'Windows', 'BSD', 'Darwin', 'Solaris', 'Linux' or 'Unknown'.
 /// Available as of PHP 7.2.0.
 public let PHP_OS_FAMILY: String = {

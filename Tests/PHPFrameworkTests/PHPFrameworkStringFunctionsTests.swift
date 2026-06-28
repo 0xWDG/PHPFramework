@@ -44,11 +44,14 @@ extension PHPFrameworkTests {
 	}
 
 	func test_convert_uudecode() {
-        XCTSkip("Function not finished")
+        let encoded = php.convert_uuencode("Hello\nPHPFramework")
+        XCTAssertEqual(php.convert_uudecode(encoded), "Hello\nPHPFramework")
 	}
 
 	func test_convert_uuencode() {
-        XCTSkip("Function not finished")
+        let encoded = php.convert_uuencode("Hello")
+        XCTAssertTrue(encoded.hasSuffix("\n`"))
+        XCTAssertEqual(php.convert_uudecode(encoded), "Hello")
 	}
 
 	func test_count_chars() {
@@ -77,7 +80,7 @@ extension PHPFrameworkTests {
 	}
 
 	func test_crypt() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.crypt("password", "ab"), "abJnggxhB/yWI")
 	}
 
 	func test_echo() {
@@ -140,6 +143,8 @@ extension PHPFrameworkTests {
 
 	func test_levenshtein() {
 		XCTAssertEqual(php.levenshtein("Hello", "ello"), 1)
+		XCTAssertEqual(php.levenshtein("kitten", "sitting"), 3)
+		XCTAssertEqual(php.levenshtein("", "abc"), 3)
 	}
 
 	func test_ltrim() {
@@ -156,7 +161,9 @@ extension PHPFrameworkTests {
 	}
 
 	func test_metaphone() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.metaphone("programming"), "PRKRMNK")
+        XCTAssertEqual(php.metaphone("phone"), "FN")
+        XCTAssertEqual(php.metaphone("Xavier"), "SFR")
 	}
 
 	func test_money_format() {
@@ -178,7 +185,9 @@ extension PHPFrameworkTests {
 	func test_parse_str() {
 		// if no crash then pass
         php.noop(php.parse_str("first=value&arr[]=foo+bar&arr[]=baz"))
-        XCTAssertEqual(true, true) // Untestable by xcode since it is [String: Any]
+        let parsed = php.parse_str("first=value&arr[]=foo+bar&arr[]=baz&empty")
+        XCTAssertEqual(parsed["first"] as? String, "value")
+        XCTAssertEqual(parsed["arr"] as? [String], ["foo+bar", "baz"])
 	}
 
 	func test_printf() {
@@ -223,7 +232,10 @@ extension PHPFrameworkTests {
 	}
 
 	func test_soundex() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.soundex("Euler"), "E460")
+        XCTAssertEqual(php.soundex("Ellery"), "E460")
+        XCTAssertEqual(php.soundex("Ashcraft"), "A261")
+        XCTAssertEqual(php.soundex("Pfister"), "P236")
 	}
 
 	func test_sprintf() {
@@ -261,6 +273,7 @@ extension PHPFrameworkTests {
 
 	func test_str_repeat() {
 		XCTAssertEqual(php.str_repeat("Hi", 2), "HiHi")
+		XCTAssertEqual(php.str_repeat("Hi", 0), "")
 	}
 
 	func test_str_replace() {
@@ -277,6 +290,9 @@ extension PHPFrameworkTests {
 
 	func test_str_split() {
 		XCTAssertEqual(php.str_split("@wdg"), ["@", "w", "d", "g"])
+		XCTAssertEqual(php.str_split("@wdg", 2), ["@w", "dg"])
+		XCTAssertEqual(php.str_split("", 2), [])
+		XCTAssertEqual(php.str_split("@wdg", 0), [])
 	}
 
 	func test_str_word_count() {
@@ -454,15 +470,21 @@ extension PHPFrameworkTests {
 	}
 
 	func test_substr_compare() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.substr_compare("abcdef", "bc", 1, 2), 0)
+        XCTAssertEqual(php.substr_compare("abcdef", "BC", 1, 2, true), 0)
+        XCTAssertEqual(php.substr_compare("abcdef", "bd", 1, 2), -1)
 	}
 
 	func test_substr_count() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.substr_count("abcabcabc", "abc"), 3)
+        XCTAssertEqual(php.substr_count("abcabcabc", "abc", 3), 2)
+        XCTAssertEqual(php.substr_count("aaaa", "aa"), 2)
 	}
 
 	func test_substr_replace() {
-        XCTSkip("Function not finished")
+        XCTAssertEqual(php.substr_replace("abcdef", "X", 2, 3), "abXf")
+        XCTAssertEqual(php.substr_replace("abcdef", "X", -3, 2), "abcXf")
+        XCTAssertEqual(php.substr_replace("abcdef", "X", 3, 0), "abcXdef")
 	}
 
 	func test_substr() {

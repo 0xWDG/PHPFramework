@@ -12,11 +12,9 @@
 
 import Foundation
 
-/**
- All Constants, in a Dictionary
-
- *seperated otherwise Xcode will fail.*
- */
+/// All Constants, in a Dictionary
+///
+/// seperated otherwise Xcode will fail.*
 public let PHPAllConstants: [String: Any] = [
 	"E_ERROR": E_ERROR,
 	"E_RECOVERABLE_ERROR": E_RECOVERABLE_ERROR,
