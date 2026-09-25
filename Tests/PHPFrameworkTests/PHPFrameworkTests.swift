@@ -6,8 +6,8 @@
 //  Copyright © 2016 WDGWV. All rights reserved.
 //
 
-import XCTest
 @testable import PHPFramework
+import XCTest
 
 /// *PHP.Framework** \
 /// PHP In Swift*

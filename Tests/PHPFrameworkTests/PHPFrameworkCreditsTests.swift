@@ -1,3 +1,5 @@
+import Foundation
+@testable import PHPFramework
 //
 //  PHPFrameworkCreditsTests.swift
 //  PHPFramework
@@ -6,8 +8,6 @@
 //  Copyright © 2016 WDGWV. All rights reserved.
 //
 import XCTest
-@testable import PHPFramework
-import Foundation
 
 extension PHPFrameworkTests {
     func testCredits_nl() {

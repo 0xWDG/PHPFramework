@@ -6,9 +6,9 @@
 //  Copyright © 2016 WDGWV. All rights reserved.
 //
 
-import XCTest
-@testable import PHPFramework
 import Foundation
+@testable import PHPFramework
+import XCTest
 
 extension PHPFrameworkTests {
 	func test_cli_set_process_title() {

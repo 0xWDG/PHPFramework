@@ -6,9 +6,9 @@
 //  Copyright © 2016 WDGWV. All rights reserved.
 //
 
-import XCTest
-@testable import PHPFramework
 import Foundation
+@testable import PHPFramework
+import XCTest
 
 extension PHPFrameworkTests {
 	func test_filesystem_helpers_read_write_and_remove_files() {

@@ -6,8 +6,8 @@
 //  Copyright © 2016 WDGWV. All rights reserved.
 //
 
-import XCTest
 @testable import PHPFramework
+import XCTest
 
 extension PHPFrameworkTests {
 	func test_array_helpers_return_expected_values() {
